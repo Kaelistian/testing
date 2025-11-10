@@ -1,0 +1,113 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kael Avatar Shop</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+    .form, .sent {
+      max-width: 400px;
+      margin: auto;
+      background: #111;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(255,255,255,0.1);
+      transition: 0.5s ease;
+    }
+    input, button {
+      width: 90%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+    }
+    button {
+      background: #fff;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #5a8dee;
+      color: #fff;
+    }
+    .sent {
+      display: none;
+      opacity: 0;
+    }
+    .sent img {
+      width: 220px;
+      margin: 15px 0;
+      border-radius: 10px;
+    }
+    .fade {
+      transition: opacity 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kael Avatar Shop</h1>
+
+  <div class="form fade" id="form">
+    <input type="text" id="wa" placeholder="Nomor WhatsApp" required><br>
+    <input type="text" id="style" placeholder="Avatar Style (cth. Preppy, Emo)" required><br>
+    <input type="text" id="budget" placeholder="Budget" required><br>
+    <button id="submit">Sudah</button>
+  </div>
+
+  <div class="sent fade" id="sent">
+    <h2>Terimakasih!</h2>
+    <img src="sent.png" alt="SENT">
+    <p>"Hai, pesanan kamu sudah dikirim. Tunggu diterima yaa~" <b>@Kaelistian</b></p>
+  </div>
+
+  <script>
+    const btn = document.getElementById("submit");
+    const form = document.getElementById("form");
+    const sent = document.getElementById("sent");
+
+    btn.addEventListener("click", async () => {
+      const wa = document.getElementById("wa").value.trim();
+      const style = document.getElementById("style").value.trim();
+      const budget = document.getElementById("budget").value.trim();
+
+      if (!wa || !style || !budget) {
+        alert("Isi semua kolom dulu yaa 💬");
+        return;
+      }
+
+      btn.textContent = "Mengirim pesanan...";
+      btn.disabled = true;
+      btn.style.opacity = "0.7";
+
+      // Kirim ke Discord Webhook
+      await fetch("https://discord.com/api/webhooks/1437454095156777229/taZbcefPg-U_gquKFg416tsjyAtUgLR5_zIqlzs_S8FaDeAjlr7x2rSP4byr4xzgRe8l", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: `🛍️ **Kael, Pesanan baru nih!**\n 📞 *Nomor:* ${wa}\n🎨 *Style:* ${style}\n💰 *Budget:* ${budget} Robux`
+        })
+      });
+
+      // Transisi ke SENT setelah kirim
+      form.style.opacity = "0";
+      setTimeout(() => {
+        form.style.display = "none";
+        sent.style.display = "block";
+        setTimeout(() => {
+          sent.style.opacity = "1";
+        }, 100);
+      }, 600);
+    });
+  </script>
+</body>
+</html>
